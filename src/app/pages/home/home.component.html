@@ -1,0 +1,266 @@
+<div class="home-page">
+
+  <!-- ============ Hero Section ============ -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>منصة التعلم الإلكتروني</h1>
+      <p>اكتشف أفضل الكورسات مع أفضل المدرسين</p>
+      <div class="search-box">
+        <input type="text" placeholder="ابحث عن كورس...">
+        <button><i class="fas fa-search"></i> بحث</button>
+      </div>
+    </div>
+    <div class="hero-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
+  </section>
+
+  <!-- ============ Loading State ============ -->
+  @if (isLoading()) {
+    <div class="loading-container">
+      <div class="loader">
+        <div class="spinner"></div>
+        <p>جاري تحميل البيانات...</p>
+      </div>
+    </div>
+  }
+
+  <!-- ============ Error State ============ -->
+  @if (errorMessage()) {
+    <div class="error-container">
+      <div class="error-card">
+        <i class="fas fa-exclamation-triangle"></i>
+        <h3>حدث خطأ!</h3>
+        <p>{{ errorMessage() }}</p>
+        <button (click)="getDataHome()">إعادة المحاولة</button>
+      </div>
+    </div>
+  }
+
+  <!-- ============ Main Content ============ -->
+  @if (!isLoading() && !errorMessage()) {
+
+    <!-- ============ Statistics Section ============ -->
+    <section class="stats-section">
+      <div class="container">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon courses">
+              <i class="fas fa-book-open"></i>
+            </div>
+            <div class="stat-info">
+              <h3>{{ totalCourses() }}</h3>
+              <p>كورس متاح</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon users">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-info">
+              <h3>{{ totalUsers() }}</h3>
+              <p>طالب مسجل</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon teachers">
+              <i class="fas fa-chalkboard-teacher"></i>
+            </div>
+            <div class="stat-info">
+              <h3>{{ totalTeachers() }}</h3>
+              <p>مدرس محترف</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Popular Courses Section ============ -->
+    <section class="courses-section">
+      <div class="container">
+        <div class="section-header">
+          <h2><i class="fas fa-fire"></i> الكورسات الأكثر شعبية</h2>
+          <a href="#" class="view-all">عرض الكل <i class="fas fa-arrow-left"></i></a>
+        </div>
+
+        <div class="courses-grid">
+          @for (course of popularCourses(); track course.id) {
+            <div class="course-card">
+              <div class="course-image">
+                <img [src]="course.imageUrl" [alt]="course.title">
+                <div class="course-badge">
+                  <span class="subject">{{ course.subject }}</span>
+                </div>
+                <div class="course-overlay">
+                  <button class="preview-btn">
+                    <i class="fas fa-play"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="course-content">
+                <div class="course-meta">
+                  <span class="level"><i class="fas fa-signal"></i> {{ course.level }}</span>
+                  <span class="duration"><i class="fas fa-clock"></i> {{ course.durationHours }} ساعة</span>
+                </div>
+
+                <h3 class="course-title">{{ course.title }}</h3>
+
+                <p class="course-description">{{ course.description | slice:0:80 }}...</p>
+
+                <div class="course-teacher">
+                  <img src={{course.imageUrl}} alt="teacher">
+                  <span>{{ course.techerName }}</span>
+                </div>
+
+                <div class="course-footer">
+                  <div class="course-price">
+                    <span class="price">{{ course.price }}</span>
+                    <span class="currency">جنيه</span>
+                  </div>
+                  <button class="enroll-btn">اشترك الآن</button>
+                </div>
+              </div>
+            </div>
+          } @empty {
+            <div class="empty-state">
+              <i class="fas fa-folder-open"></i>
+              <p>لا توجد كورسات متاحة حالياً</p>
+            </div>
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Recent Courses Section ============ -->
+    <section class="courses-section recent">
+      <div class="container">
+        <div class="section-header">
+          <h2><i class="fas fa-clock"></i> أحدث الكورسات</h2>
+          <a href="#" class="view-all">عرض الكل <i class="fas fa-arrow-left"></i></a>
+        </div>
+
+        <div class="courses-grid">
+          @for (course of recentCourses(); track course.id; let i = $index) {
+            <div class="course-card" [class.featured]="i === 0">
+              <div class="course-image">
+                <img [src]="course.imageUrl" [alt]="course.title">
+                @if (i === 0) {
+                  <div class="new-badge">جديد</div>
+                }
+                <div class="course-badge">
+                  <span class="subject">{{ course.subject }}</span>
+                </div>
+                <div class="course-overlay">
+                  <button class="preview-btn">
+                    <i class="fas fa-play"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="course-content">
+                <div class="course-meta">
+                  <span class="level"><i class="fas fa-signal"></i> {{ course.level }}</span>
+                  <span class="academic-year">
+                    <i class="fas fa-graduation-cap"></i> {{ course.academicYearTarget }}
+                  </span>
+                </div>
+
+                <h3 class="course-title">{{ course.title }}</h3>
+
+                <p class="course-description">{{ course.description | slice:0:80 }}...</p>
+
+                <div class="course-teacher">
+                  <img src={{course.imageUrl}} alt="teacher">
+                  <span>{{ course.techerName }}</span>
+                </div>
+
+                <div class="course-footer">
+                  <div class="course-price">
+                    <span class="price">{{ course.price }}</span>
+                    <span class="currency">جنيه</span>
+                  </div>
+                  <button class="enroll-btn">اشترك الآن</button>
+                </div>
+              </div>
+            </div>
+          } @empty {
+            <div class="empty-state">
+              <i class="fas fa-folder-open"></i>
+              <p>لا توجد كورسات جديدة</p>
+            </div>
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Top Teachers Section ============ -->
+    <section class="teachers-section">
+      <div class="container">
+        <div class="section-header">
+          <h2><i class="fas fa-star"></i> أفضل المدرسين</h2>
+          <a href="#" class="view-all">عرض الكل <i class="fas fa-arrow-left"></i></a>
+        </div>
+
+        <div class="teachers-grid">
+          @for (teacher of topTeachers(); track teacher.teacherId; let i = $index, first = $first) {
+            <div class="teacher-card" [class.top-teacher]="first">
+              @if (first) {
+                <div class="crown-badge">
+                  <i class="fas fa-crown"></i>
+                </div>
+              }
+
+              <div class="teacher-avatar">
+                @if (teacher.profilePictureUrl) {
+                  <img [src]="teacher.profilePictureUrl" [alt]="teacher.fullName">
+                } @else {
+                  <div class="avatar-placeholder">
+                    <i class="fas fa-user"></i>
+                  </div>
+                }
+              </div>
+
+              <div class="teacher-info">
+                <h3>{{ teacher.fullName }}</h3>
+                <span class="subject-badge">{{ teacher.subject }}</span>
+                <p class="bio">{{ teacher.bio }}</p>
+
+                <div class="teacher-stats">
+                  <div class="stat">
+                    <i class="fas fa-star"></i>
+                    <span>{{ teacher.averageRating || 'جديد' }}</span>
+                  </div>
+                  <div class="stat">
+                    <i class="fas fa-user-graduate"></i>
+                    <span>{{ teacher.studentsCount }} طالب</span>
+                  </div>
+                  <div class="stat">
+                    <i class="fas fa-book"></i>
+                    <span>{{ teacher.coursesCount }} كورس</span>
+                  </div>
+                </div>
+
+                <button class="view-profile-btn">
+                  عرض الملف الشخصي
+                  <i class="fas fa-arrow-left"></i>
+                </button>
+              </div>
+            </div>
+          } @empty {
+            <div class="empty-state">
+              <i class="fas fa-user-slash"></i>
+              <p>لا يوجد مدرسين متاحين</p>
+            </div>
+          }
+        </div>
+      </div>
+    </section>
+
+
+  }
+</div>

@@ -1,0 +1,341 @@
+/* ============ Main Styles ============ */
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  direction: rtl;
+}
+
+.header-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0.75rem 1rem;
+}
+
+/* ============ Toolbar ============ */
+:host ::ng-deep .custom-toolbar {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+  border: none !important;
+  border-radius: 1rem !important;
+  padding: 0.5rem 1.5rem !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+:host ::ng-deep .p-toolbar-group-start,
+:host ::ng-deep .p-toolbar-group-center,
+:host ::ng-deep .p-toolbar-group-end {
+  gap: 1rem;
+}
+
+/* ============ Start Section ============ */
+.start-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+:host ::ng-deep .mobile-menu-btn {
+  display: none !important;
+  color: white !important;
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  transition: transform 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.02);
+}
+
+.logo-icon {
+  width: 45px;
+  height: 45px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.4rem;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+}
+
+.logo-text {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: white;
+}
+
+/* ============ Navigation ============ */
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.1rem;
+  color: #cbd5e1;
+  text-decoration: none;
+  border-radius: 50px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.nav-link i {
+  font-size: 1rem;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.nav-link.active-link {
+  background: #6366f1;
+  color: white;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+}
+
+/* ============ End Section ============ */
+.end-section {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+:host ::ng-deep .end-section .p-button {
+  color: #cbd5e1 !important;
+}
+
+:host ::ng-deep .end-section .p-button:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: white !important;
+}
+
+/* User Menu */
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.4rem 1rem 0.4rem 0.4rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.user-menu:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.user-name {
+  color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.user-menu i {
+  color: #94a3b8;
+  font-size: 0.75rem;
+}
+
+/* Auth Buttons */
+.auth-btns {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ============ User Panel ============ */
+.user-panel {
+  min-width: 220px;
+  direction: rtl;
+}
+
+.user-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.user-panel-header h4 {
+  margin: 0;
+  font-size: 1rem;
+  color: #1e293b;
+}
+
+.user-panel-header span {
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.user-panel-menu {
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  color: #475569;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.panel-item:hover {
+  background: #f1f5f9;
+  color: #6366f1;
+}
+
+.panel-item i {
+  font-size: 1rem;
+  width: 20px;
+}
+
+.panel-divider {
+  height: 1px;
+  background: #e2e8f0;
+  margin: 0.5rem 0;
+}
+
+.panel-item.logout {
+  color: #ef4444;
+}
+
+.panel-item.logout:hover {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+/* ============ Sidebar ============ */
+:host ::ng-deep .p-sidebar {
+  direction: rtl;
+}
+
+.sidebar-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.sidebar-title i {
+  color: #6366f1;
+  font-size: 1.5rem;
+}
+
+.sidebar-content {
+  padding: 1rem 0;
+}
+
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+}
+
+.sidebar-user h4 {
+  margin: 0;
+  color: #1e293b;
+}
+
+.sidebar-user span {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  color: #475569;
+  text-decoration: none;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.sidebar-link i {
+  font-size: 1.1rem;
+  width: 24px;
+  color: #64748b;
+}
+
+.sidebar-link:hover {
+  background: #f1f5f9;
+}
+
+.sidebar-link.active {
+  background: #6366f1;
+  color: white;
+}
+
+.sidebar-link.active i {
+  color: white;
+}
+
+.sidebar-auth {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+/* ============ Responsive ============ */
+@media (max-width: 1024px) {
+  .nav-menu {
+    display: none;
+  }
+
+  :host ::ng-deep .mobile-menu-btn {
+    display: flex !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .logo-text {
+    display: none;
+  }
+
+  .user-name {
+    display: none;
+  }
+
+  .auth-btns span {
+    display: none;
+  }
+}

@@ -1,0 +1,181 @@
+<header dir="rtl">
+  <div class="header-container">
+
+    <p-toolbar styleClass="custom-toolbar">
+
+      <!-- ======= START: Logo & Menu Button ======= -->
+      <ng-template pTemplate="start">
+        <div class="start-section">
+
+          <!-- Mobile Menu Button -->
+          <p-button
+            icon="pi pi-bars"
+            [text]="true"
+            [plain]="true"
+            styleClass="mobile-menu-btn"
+            (onClick)="sidebarVisible = true">
+          </p-button>
+
+          <!-- Logo -->
+          <a routerLink="/" class="logo">
+            <span class="logo-icon">
+              <i class="pi pi-graduation-cap"></i>
+            </span>
+            <span class="logo-text">منصة التعلم</span>
+          </a>
+
+        </div>
+      </ng-template>
+
+      <!-- ======= CENTER: Navigation ======= -->
+      <ng-template pTemplate="center">
+        <nav class="nav-menu">
+          @for (link of navLinks; track link.route) {
+            <a
+              [routerLink]="link.route"
+              routerLinkActive="active-link"
+              [routerLinkActiveOptions]="{exact: link.route === '/'}"
+              class="nav-link">
+              <i [class]="link.icon"></i>
+              <span>{{ link.label }}</span>
+            </a>
+          }
+        </nav>
+      </ng-template>
+
+      <!-- ======= END: Actions ======= -->
+      <ng-template pTemplate="end">
+        <div class="end-section">
+
+          <!-- Search -->
+          <p-button
+            icon="pi pi-search"
+            [rounded]="true"
+            [text]="true"
+            severity="secondary">
+          </p-button>
+
+          <!-- Notifications -->
+          @if (isLoggedIn) {
+            <p-button
+              icon="pi pi-bell"
+              [rounded]="true"
+              [text]="true"
+              severity="secondary"
+              badge="3"
+              badgeClass="p-badge-danger">
+            </p-button>
+          }
+
+          <!-- User / Auth -->
+          @if (isLoggedIn) {
+            <div class="user-menu" (click)="op.toggle($event)">
+              <p-avatar
+                [image]="user.avatar"
+                shape="circle"
+                size="normal">
+              </p-avatar>
+              <span class="user-name">{{ user.name }}</span>
+              <i class="pi pi-chevron-down"></i>
+            </div>
+          } @else {
+            <div class="auth-btns">
+              <p-button
+                label="دخول"
+                icon="pi pi-sign-in"
+                [text]="true">
+              </p-button>
+              <p-button
+                label="تسجيل"
+                icon="pi pi-user-plus"
+                [rounded]="true">
+              </p-button>
+            </div>
+          }
+
+        </div>
+      </ng-template>
+
+    </p-toolbar>
+
+  </div>
+
+  <!-- ======= User Menu Overlay ======= -->
+  <p-overlayPanel #op>
+    <div class="user-panel">
+      <div class="user-panel-header">
+        <p-avatar [image]="user.avatar" size="large" shape="circle"></p-avatar>
+        <div>
+          <h4>{{ user.name }}</h4>
+          <span>{{ user.role }}</span>
+        </div>
+      </div>
+      <div class="user-panel-menu">
+        <a routerLink="/profile" class="panel-item">
+          <i class="pi pi-user"></i>
+          <span>الملف الشخصي</span>
+        </a>
+        <a routerLink="/my-courses" class="panel-item">
+          <i class="pi pi-book"></i>
+          <span>كورساتي</span>
+        </a>
+        <a routerLink="/settings" class="panel-item">
+          <i class="pi pi-cog"></i>
+          <span>الإعدادات</span>
+        </a>
+        <div class="panel-divider"></div>
+        <a (click)="logout()" class="panel-item logout">
+          <i class="pi pi-sign-out"></i>
+          <span>تسجيل خروج</span>
+        </a>
+      </div>
+    </div>
+  </p-overlayPanel>
+
+  <!-- ======= Mobile Sidebar ======= -->
+  <p-sidebar
+    [(visible)]="sidebarVisible"
+    position="right"
+    [style]="{width: '280px'}">
+
+    <ng-template pTemplate="header">
+      <span class="sidebar-title">
+        <i class="pi pi-graduation-cap"></i>
+        منصة التعلم
+      </span>
+    </ng-template>
+
+    <div class="sidebar-content">
+      @if (isLoggedIn) {
+        <div class="sidebar-user">
+          <p-avatar [image]="user.avatar" size="large" shape="circle"></p-avatar>
+          <div>
+            <h4>{{ user.name }}</h4>
+            <span>{{ user.role }}</span>
+          </div>
+        </div>
+      }
+
+      <nav class="sidebar-nav">
+        @for (link of navLinks; track link.route) {
+          <a
+            [routerLink]="link.route"
+            class="sidebar-link"
+            (click)="sidebarVisible = false">
+            <i [class]="link.icon"></i>
+            <span>{{ link.label }}</span>
+          </a>
+        }
+      </nav>
+
+      @if (!isLoggedIn) {
+        <div class="sidebar-auth">
+          <p-button label="تسجيل دخول" icon="pi pi-sign-in" styleClass="w-full" [outlined]="true"></p-button>
+          <p-button label="حساب جديد" icon="pi pi-user-plus" styleClass="w-full"></p-button>
+        </div>
+      }
+    </div>
+
+  </p-sidebar>
+
+</header>
