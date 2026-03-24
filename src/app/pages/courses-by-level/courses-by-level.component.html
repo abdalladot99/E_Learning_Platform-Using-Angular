@@ -1,0 +1,367 @@
+<div class="courses-level-page" dir="rtl">
+
+  <!-- ══════════════════════════════
+              Hero
+  ══════════════════════════════ -->
+  <section class="level-hero">
+    <div class="level-hero-bg">
+      <div class="hero-orb orb-1"></div>
+      <div class="hero-orb orb-2"></div>
+      <div class="hero-grid"></div>
+    </div>
+
+    <div class="container">
+
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb-nav">
+        <a routerLink="/" class="bc-link">
+          <i class="pi pi-home"></i>
+          الرئيسية
+        </a>
+        <i class="pi pi-angle-left bc-sep"></i>
+        <span class="bc-current">
+          <i class="pi pi-graduation-cap"></i>
+          {{ academicYear() }}
+        </span>
+      </nav>
+
+      <!-- Hero Content -->
+      <div class="level-hero-content">
+        <div class="level-hero-text">
+          <div class="hero-badge-tag">
+            <i class="pi pi-bolt"></i>
+            منصة التعلم التعليمية
+          </div>
+          <h1>
+            كورسات
+            <span class="gradient-text">{{ academicYear() }}</span>
+          </h1>
+          <p>
+            اختر من بين أفضل الكورسات المتاحة للمرحلة {{ academicYear() }}
+            مع نخبة من أفضل المدرسين المتخصصين
+          </p>
+        </div>
+
+        <!-- Hero Stats -->
+        @if (data()) {
+          <div class="hero-stats-wrap">
+            <div class="hero-stat">
+              <i class="pi pi-play-circle"></i>
+              <div>
+                <span class="hs-num">{{ data()!.totalCourses }}</span>
+                <span class="hs-lbl">كورس</span>
+              </div>
+            </div>
+            <div class="hero-stat-sep"></div>
+            <div class="hero-stat">
+              <i class="pi pi-users"></i>
+              <div>
+                <span class="hs-num">{{ getEnrollmentsCount() }}</span>
+                <span class="hs-lbl">طالب مسجل</span>
+              </div>
+            </div>
+            <div class="hero-stat-sep"></div>
+            <div class="hero-stat">
+              <i class="pi pi-list"></i>
+              <div>
+                <span class="hs-num">{{ data()!.allSubjects.length }}</span>
+                <span class="hs-lbl">مادة</span>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- ── Level Tabs ── -->
+      <div class="level-tabs">
+        @for (tab of levelTabs; track tab.value) {
+          <button
+            class="level-tab"
+            [class.active]="academicYear() === tab.value"
+            [style.--tab-color]="tab.color"
+            (click)="changeLevel(tab.value)"
+          >
+            <i [class]="tab.icon"></i>
+            <span>{{ tab.label }}</span>
+          </button>
+        }
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════
+              Main Content
+  ══════════════════════════════ -->
+  <div class="level-main">
+    <div class="container">
+
+      <!-- ── Loading ── -->
+      @if (isLoading()) {
+        <div class="state-center">
+          <div class="loading-card">
+            <div class="spinner-wrap">
+              <div class="sp-ring"></div>
+              <div class="sp-ring"></div>
+              <div class="sp-ring"></div>
+              <div class="sp-core">
+                <i class="pi pi-book"></i>
+              </div>
+            </div>
+            <h3>جاري التحميل</h3>
+            <p>يتم جلب الكورسات...</p>
+            <div class="loading-dots">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- ── Error ── -->
+      @if (errorMessage()) {
+        <div class="state-center">
+          <div class="error-card">
+            <div class="error-icon">
+              <i class="pi pi-times-circle"></i>
+            </div>
+            <h3>حدث خطأ!</h3>
+            <p>{{ errorMessage() }}</p>
+            <button
+              class="retry-btn"
+              (click)="fetchCourses(academicYear(), currentPage())"
+            >
+              <i class="pi pi-refresh"></i>
+              إعادة المحاولة
+            </button>
+          </div>
+        </div>
+      }
+
+      <!-- ── Data ── -->
+      @if (!isLoading() && !errorMessage() && data()) {
+
+        <!-- Toolbar -->
+        <div class="courses-toolbar">
+
+          <!-- Subjects Filter -->
+          <div class="subjects-filter">
+            <span class="filter-label">
+              <i class="pi pi-filter"></i>
+              السنة الدراسية:
+            </span>
+            <div class="filter-chips">
+              <button
+                class="chip-btn"
+                [class.active]="activeSubject() === 'all'"
+                (click)="setSubject('all')"
+              >
+                الكل
+              </button>
+              @for (sub of data()!.allSubjects; track sub) {
+                <button
+                  class="chip-btn"
+                  [class.active]="activeSubject() === sub"
+                  (click)="setSubject(sub)"
+                >
+                  {{ sub }}
+                </button>
+              }
+            </div>
+          </div>
+
+          <!-- Price + Level Filters -->
+          <div class="right-filters">
+            @for (f of priceFilters; track f.value) {
+              <button
+                class="filter-btn"
+                [class.active]="activePriceFilter() === f.value"
+                (click)="activePriceFilter.set(f.value)"
+              >
+                <i [class]="f.icon"></i>
+                {{ f.label }}
+              </button>
+            }
+          </div>
+        </div>
+
+        <!-- Results Info -->
+        <div class="results-info">
+          <span class="results-text">
+            <strong>{{ filteredCourses().length }}</strong>
+            كورس متاح
+            @if (activeSubject() !== 'all') {
+              في  <strong>{{ activeSubject() }}</strong>
+            }
+          </span>
+          <span class="page-info">
+            صفحة {{ currentPage() }} من {{ totalPages() }}
+          </span>
+        </div>
+
+        <!-- ── Grid ── -->
+        @if (filteredCourses().length > 0) {
+          <div class="courses-grid">
+            @for (course of filteredCourses(); track course.id; let i = $index) {
+              <div
+                class="course-card"
+                [style.animation-delay]="(i * 0.08) + 's'"
+                [routerLink]="['/user/details', course.id]"
+              >
+                <!-- Image -->
+                <div class="course-img-wrap">
+                  @if (course.imageUrl) {
+                    <img
+                      [src]="course.imageUrl"
+                      [alt]="course.title"
+                      class="course-img"
+                    >
+                  } @else {
+                    <div class="course-img-placeholder">
+                      <i class="pi pi-play-circle"></i>
+                    </div>
+                  }
+
+                  <!-- Hover Overlay -->
+                  <div class="img-overlay">
+                    <div class="play-btn">
+                      <i class="pi pi-play"></i>
+                    </div>
+                  </div>
+
+                  <!-- Badges -->
+                  <div class="course-badges">
+                    <span
+                      class="badge-level"
+                      [ngClass]="getLevelClass(course.level)"
+                    >
+                      {{ course.level }}
+                    </span>
+                  </div>
+
+                  <!-- Price -->
+                  <div
+                    class="price-tag"
+                    [class.free-price]="course.price === 0"
+                  >
+                    @if (course.price === 0) {
+                      <i class="pi pi-gift"></i> مجاني
+                    } @else {
+                      {{ course.price }} ج
+                    }
+                  </div>
+                </div>
+
+                <!-- Body -->
+                <div class="course-body">
+
+                  <!-- Meta -->
+                  <div class="course-meta">
+                    <span class="meta-year">
+                      <i class="pi pi-graduation-cap"></i>
+                      {{ course.academicYearTarget }}
+                    </span>
+                    <span class="meta-subject">{{ course.subject }}</span>
+                  </div>
+
+                  <!-- Title -->
+                  <h3 class="course-title">
+                    {{ truncate(course.title, 65) }}
+                  </h3>
+
+                  <!-- Desc -->
+                  <p class="course-desc">
+                    {{ truncate(course.description, 100) }}
+                  </p>
+
+                  <!-- Teacher -->
+                  <div class="course-teacher">
+                    <div class="teacher-ava">
+                      {{ getInitials(course.techerName) }}
+                    </div>
+                    <div class="teacher-details">
+                      <span class="teacher-role">المدرس</span>
+                      <span class="teacher-name">{{ course.techerName }}</span>
+                    </div>
+                  </div>
+
+                  <!-- Footer -->
+                  <div class="course-footer">
+                    <div class="course-chips">
+                      <span class="chip">
+                        <i class="pi pi-clock"></i>
+                        {{ course.durationHours }} ساعة
+                      </span>
+                      <span class="chip">
+                        <i class="pi pi-users"></i>
+                      </span>
+                    </div>
+                    <button
+                      class="enroll-btn"
+                      (click)="$event.stopPropagation()"
+                    >
+                      سجّل الآن
+                      <i class="pi pi-arrow-left"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+
+          <!-- ── Pagination ── -->
+          @if (totalPages() > 1) {
+            <div class="pagination-wrap">
+              <button
+                class="pag-btn prev-btn"
+                [disabled]="currentPage() === 1"
+                (click)="goToPage(currentPage() - 1)"
+              >
+                <i class="pi pi-angle-right"></i>
+              </button>
+
+              <div class="pag-pages">
+                @for (page of getPagesArray(); track page) {
+                  <button
+                    class="pag-page"
+                    [class.active]="currentPage() === page"
+                    (click)="goToPage(page)"
+                  >
+                    {{ page }}
+                  </button>
+                }
+              </div>
+
+              <button
+                class="pag-btn next-btn"
+                [disabled]="currentPage() === totalPages()"
+                (click)="goToPage(currentPage() + 1)"
+              >
+                <i class="pi pi-angle-left"></i>
+              </button>
+            </div>
+          }
+
+        } @else {
+
+          <!-- Empty -->
+          <div class="empty-state">
+            <div class="empty-circle">
+              <i class="pi pi-inbox"></i>
+            </div>
+            <h3>لا توجد نتائج</h3>
+            <p>لا توجد كورسات تطابق الفلتر المحدد</p>
+            <button
+              class="reset-btn"
+              (click)="setSubject('all'); activePriceFilter.set('all')"
+            >
+              <i class="pi pi-refresh"></i>
+              إعادة ضبط الفلاتر
+            </button>
+          </div>
+
+        }
+      }
+
+    </div>
+  </div>
+</div>

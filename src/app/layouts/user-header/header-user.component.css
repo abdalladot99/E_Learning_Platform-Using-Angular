@@ -339,3 +339,196 @@ header {
     display: none;
   }
 }
+
+
+/* ============================================
+   Icon Buttons (Search / Notifications)
+   ============================================ */
+.icon-btn {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+}
+
+.icon-btn i {
+  font-size: 1.1rem;
+}
+
+.icon-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+/* Notification Badge */
+.notif-btn {
+  position: relative;
+}
+
+.notif-badge {
+  position: absolute;
+  top: 4px;
+  left: 4px;             /* RTL: يسار = فوق اليمين */
+  min-width: 18px;
+  height: 18px;
+  background: #ef4444;
+  color: white;
+  border-radius: 10px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
+  border: 2px solid #0f172a;  /* نفس لون الـ toolbar */
+  pointer-events: none;
+}
+
+/* ============================================
+   Ghost Button (دخول)
+   ============================================ */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50px;
+  color: #cbd5e1;
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* ============================================
+   Primary Button (تسجيل)
+   ============================================ */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1.1rem;
+  background: #6366f1;
+  border: none;
+  border-radius: 50px;
+  color: white;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+  font-family: inherit;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.35);
+}
+
+.btn-primary:hover {
+  background: #4f46e5;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* ============================================
+   Panel Item (override للـ button)
+   ============================================ */
+.panel-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  color: #475569;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  /* ✅ Reset button styles */
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: right;
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+
+.panel-item:hover {
+  background: #f1f5f9;
+  color: #6366f1;
+}
+
+.panel-item i {
+  font-size: 1rem;
+  width: 20px;
+  flex-shrink: 0;
+}
+
+/* ✅ Logout */
+.panel-item.logout {
+  color: #ef4444;
+}
+
+.panel-item.logout:hover {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+/* ============================================
+   Sidebar Auth Full Width
+   ============================================ */
+.sidebar-auth .btn-ghost,
+.sidebar-auth .btn-primary {
+  width: 100%;
+  justify-content: center;
+}
+
+.sidebar-auth .btn-ghost {
+  color: #475569;
+  border-color: #e2e8f0;
+}
+
+.sidebar-auth .btn-ghost:hover {
+  background: #f1f5f9;
+  color: #1e293b;
+  border-color: #cbd5e1;
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+@media (max-width: 768px) {
+  /* إخفاء النص من الأزرار في الموبايل */
+  .auth-btns .btn-ghost span,
+  .auth-btns .btn-primary span {
+    display: none;
+  }
+
+  .auth-btns .btn-ghost,
+  .auth-btns .btn-primary {
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 50%;
+  }
+}

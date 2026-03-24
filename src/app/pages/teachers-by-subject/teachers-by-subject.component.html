@@ -1,0 +1,445 @@
+<div class="subject-page" dir="rtl">
+
+  <!-- ══════════════════════════════════════
+              Hero Section
+  ══════════════════════════════════════ -->
+  <section class="subject-hero">
+    <div class="subject-hero-bg">
+      <div class="hero-orb orb-1"></div>
+      <div class="hero-orb orb-2"></div>
+      <div class="hero-orb orb-3"></div>
+      <div class="hero-grid"></div>
+    </div>
+
+    <div class="container">
+
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb-nav">
+        <a routerLink="/" class="bc-link">
+          <i class="pi pi-home"></i>
+          <span>الرئيسية</span>
+        </a>
+        <i class="pi pi-angle-left bc-sep"></i>
+        <a routerLink="/subjects" class="bc-link">
+          <i class="pi pi-th-large"></i>
+          <span>المواد الدراسية</span>
+        </a>
+        <i class="pi pi-angle-left bc-sep"></i>
+        <span class="bc-current">
+          <i class="pi pi-book"></i>
+          {{ data()?.subject ?? '...' }}
+        </span>
+      </nav>
+
+      <!-- Hero Body -->
+      <div class="subject-hero-content">
+
+        <!-- Icon -->
+        <div class="subject-icon-big">
+          <div class="icon-inner">
+            <i class="pi pi-book"></i>
+          </div>
+          <div class="icon-ring ring-a"></div>
+          <div class="icon-ring ring-b"></div>
+        </div>
+
+        <!-- Text -->
+        <div class="subject-hero-text">
+          <div class="hero-tag">
+            <i class="pi pi-bolt"></i>
+            محتوى تعليمي متميز
+          </div>
+          <h1>
+            مادة
+            <span class="hero-subject-name">{{ data()?.subject ?? '...' }}</span>
+          </h1>
+          <p>اكتشف أفضل الكورسات والمدرسين المتخصصين في هذه المادة وابدأ رحلتك التعليمية الآن</p>
+        </div>
+
+        <!-- Stats -->
+        @if (data()) {
+          <div class="subject-hero-stats">
+            <div class="hero-stat-item">
+              <div class="hero-stat-icon">
+                <i class="pi pi-user"></i>
+              </div>
+              <span class="hero-stat-num">{{ data()!.teachers.length }}</span>
+              <span class="hero-stat-lbl">مدرس متخصص</span>
+            </div>
+            <div class="hero-stat-divider"></div>
+            <div class="hero-stat-item">
+              <div class="hero-stat-icon courses-icon-stat">
+                <i class="pi pi-play-circle"></i>
+              </div>
+              <span class="hero-stat-num">{{ data()!.courses.length }}</span>
+              <span class="hero-stat-lbl">كورس متاح</span>
+            </div>
+            <div class="hero-stat-divider"></div>
+            <div class="hero-stat-item">
+              <div class="hero-stat-icon students-icon-stat">
+                <i class="pi pi-users"></i>
+              </div>
+              <span class="hero-stat-num">{{ getTotalStudents() }}</span>
+              <span class="hero-stat-lbl">طالب مسجل</span>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+              Main Content
+  ══════════════════════════════════════ -->
+  <div class="subject-main ">
+    <div class="container">
+
+      <!-- ── Loading ── -->
+      @if (isLoading()) {
+        <div class="state-wrapper">
+          <div class="loading-card">
+            <div class="loading-spinner">
+              <div class="sp-ring"></div>
+              <div class="sp-ring"></div>
+              <div class="sp-ring"></div>
+              <div class="sp-core">
+                <i class="pi pi-book"></i>
+              </div>
+            </div>
+            <h3>جاري التحميل</h3>
+            <p>يتم جلب المحتوى التعليمي...</p>
+            <div class="loading-dots">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- ── Error ── -->
+      @if (errorMessage()) {
+        <div class="state-wrapper ">
+          <div class="error-box">
+            <div class="error-icon-wrap">
+              <i class="pi pi-times-circle"></i>
+              <div class="error-pulse"></div>
+            </div>
+            <h3>حدث خطأ!</h3>
+            <p>{{ errorMessage() }}</p>
+            <button class="retry-btn" (click)="fetchData(data()?.subject ?? '')">
+              <i class="pi pi-refresh"></i>
+              إعادة المحاولة
+            </button>
+          </div>
+        </div>
+      }
+
+      <!-- ── Main Data ── -->
+      @if (!isLoading() && !errorMessage() && data()) {
+
+        <!-- ════════════════════════
+                  Teachers
+        ════════════════════════ -->
+        @if (data()!.teachers.length > 0) {
+          <section class="results-section">
+
+            <div class="results-header">
+              <div class="results-title">
+                <div class="results-badge">
+                  <i class="pi pi-user"></i>
+                </div>
+                <div>
+                  <h2>المدرسون المتخصصون</h2>
+                  <p class="results-subtitle">
+                    نخبة من أفضل المدرسين في مادة {{ data()!.subject }}
+                  </p>
+                </div>
+                <span class="results-count">
+                  {{ data()!.teachers.length }}
+                </span>
+              </div>
+
+              <a
+                [routerLink]="['/teachers']"
+                [queryParams]="{ subject: data()!.subject }"
+                class="see-all-link"
+              >
+                <span>عرض الكل</span>
+                <i class="pi pi-arrow-left"></i>
+              </a>
+            </div>
+
+            <div class="teachers-grid">
+              @for (teacher of data()!.teachers; track teacher.teacherId; let i = $index) {
+                <div
+                  class="teacher-card"
+                  [style.animation-delay]="(i * 0.12) + 's'"
+                  [routerLink]="['/user/teacher-profile', teacher.teacherId]"
+                >
+                  <!-- Top Accent Bar -->
+                  <div class="card-accent-bar"></div>
+
+                  <!-- Avatar -->
+                  <div class="teacher-avatar-wrap">
+                    @if (teacher.profilePictureUrl) {
+                      <img
+                        [src]="teacher.profilePictureUrl"
+                        [alt]="teacher.fullName"
+                        class="teacher-avatar"
+                      >
+                    } @else {
+                      <div class="teacher-avatar-placeholder">
+                        {{ getInitials(teacher.fullName) }}
+                      </div>
+                    }
+                    <!-- Online Badge -->
+                    <div class="online-badge"></div>
+                  </div>
+
+                  <!-- Info -->
+                  <div class="teacher-info">
+                    <h4 class="teacher-name">{{ teacher.fullName }}</h4>
+                    <span class="teacher-subject-tag">
+                      <i class="pi pi-book"></i>
+                      {{ teacher.subject }}
+                    </span>
+                    <p class="teacher-bio">{{ truncate(teacher.bio, 80) }}</p>
+                  </div>
+
+                  <!-- Stats Row -->
+                  <div class="teacher-stats">
+                    <div class="t-stat">
+                      <div class="t-stat-icon star-icon">
+                        <i class="pi pi-star-fill"></i>
+                      </div>
+                      <div class="t-stat-content">
+                        <span class="t-stat-val">{{ formatRating(teacher.averageRating) }}</span>
+                        <span class="t-stat-lbl">التقييم</span>
+                      </div>
+                    </div>
+                    <div class="t-stat-sep"></div>
+                    <div class="t-stat">
+                      <div class="t-stat-icon users-icon">
+                        <i class="pi pi-users"></i>
+                      </div>
+                      <div class="t-stat-content">
+                        <span class="t-stat-val">{{ teacher.studentsCount }}</span>
+                        <span class="t-stat-lbl">طالب</span>
+                      </div>
+                    </div>
+                    <div class="t-stat-sep"></div>
+                    <div class="t-stat">
+                      <div class="t-stat-icon book-icon">
+                        <i class="pi pi-book"></i>
+                      </div>
+                      <div class="t-stat-content">
+                        <span class="t-stat-val">{{ teacher.coursesCount }}</span>
+                        <span class="t-stat-lbl">كورس</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- CTA -->
+                  <button class="teacher-btn">
+                    <i class="pi pi-user"></i>
+                    <span>عرض الملف الشخصي</span>
+                    <i class="pi pi-arrow-left btn-arrow"></i>
+                  </button>
+
+                  <!-- Hover Glow -->
+                  <div class="card-glow"></div>
+                </div>
+              }
+            </div>
+          </section>
+        }
+
+        <!-- ════════════════════════
+                  Courses
+        ════════════════════════ -->
+        @if (data()!.courses.length > 0) {
+          <section class="results-section">
+
+            <div class="results-header">
+              <div class="results-title">
+                <div class="results-badge courses-badge">
+                  <i class="pi pi-play-circle"></i>
+                </div>
+                <div>
+                  <h2>الكورسات المتاحة</h2>
+                  <p class="results-subtitle">اختر الكورس المناسب لمستواك</p>
+                </div>
+                <span class="results-count courses-count">
+                  {{ data()!.courses.length }}
+                </span>
+              </div>
+
+              <!-- Filters -->
+              <div class="courses-filters">
+                @for (f of filters; track f.value) {
+                  <button
+                    class="filter-btn"
+                    [class.active]="activeFilter() === f.value"
+                    (click)="setFilter(f.value)"
+                  >
+                    <i [class]="f.icon"></i>
+                    {{ f.label }}
+                  </button>
+                }
+              </div>
+            </div>
+
+            <!-- Courses Grid -->
+            <div class="courses-grid">
+              @for (course of filteredCourses(); track course.id; let i = $index) {
+                <div
+                  class="course-card"
+                  [style.animation-delay]="(i * 0.1) + 's'"
+                  [routerLink]="['/user/details', course.id]"
+                >
+                  <!-- Image -->
+                  <div class="course-img-wrap">
+                    @if (course.imageUrl) {
+                      <img
+                        [src]="course.imageUrl"
+                        [alt]="course.title"
+                        class="course-img"
+                      >
+                    } @else {
+                      <div class="course-img-placeholder">
+                        <i class="pi pi-play-circle"></i>
+                      </div>
+                    }
+
+                    <!-- Overlay on hover -->
+                    <div class="course-img-overlay">
+                      <div class="overlay-play">
+                        <i class="pi pi-play"></i>
+                      </div>
+                    </div>
+
+                    <!-- Top Badges -->
+                    <div class="course-badges">
+                      <span
+                        class="badge-level"
+                        [ngClass]="getLevelClass(course.level)"
+                      >
+                        {{ course.level }}
+                      </span>
+                      @if (!course.isPublished) {
+                        <span class="badge-draft">
+                          <i class="pi pi-clock"></i>
+                          قريباً
+                        </span>
+                      }
+                    </div>
+
+                    <!-- Price -->
+                    <div
+                      class="course-price-tag"
+                      [class.free-tag]="course.price === 0"
+                    >
+                      @if (course.price === 0) {
+                        <i class="pi pi-gift"></i>
+                        مجاني
+                      } @else {
+                        <i class="pi pi-tag"></i>
+                        {{ course.price }} ج
+                      }
+                    </div>
+                  </div>
+
+                  <!-- Body -->
+                  <div class="course-body">
+
+                    <!-- Meta -->
+                    <div class="course-meta-top">
+                      <span class="course-year">
+                        <i class="pi pi-graduation-cap"></i>
+                        {{ course.academicYearTarget }}
+                      </span>
+                      <span class="course-subject-tag">{{ course.subject }}</span>
+                    </div>
+
+                    <!-- Title -->
+                    <h3 class="course-title">{{ truncate(course.title, 65) }}</h3>
+
+                    <!-- Description -->
+                    <p class="course-desc">{{ truncate(course.description, 100) }}</p>
+
+                    <!-- Teacher -->
+                    <div class="course-teacher">
+                      <div class="ct-avatar">{{ getInitials(course.techerName) }}</div>
+                      <div class="ct-info">
+                        <span class="ct-label">المدرس</span>
+                        <span class="ct-name">{{ course.techerName }}</span>
+                      </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="course-footer">
+                      <div class="course-info-chips">
+                        <span class="info-chip">
+                          <i class="pi pi-clock"></i>
+                          {{ course.durationHours }} ساعة
+                        </span>
+                        <span class="info-chip">
+                          <i class="pi pi-users"></i>
+                        </span>
+                      </div>
+                      <button
+                        class="enroll-btn"
+                        (click)="$event.stopPropagation()"
+                      >
+                        <span>سجّل الآن</span>
+                        <i class="pi pi-arrow-left"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+
+            <!-- Empty Filter -->
+            @if (filteredCourses().length === 0) {
+              <div class="empty-filter">
+                <div class="empty-filter-icon">
+                  <i class="pi pi-filter-slash"></i>
+                </div>
+                <h4>لا توجد نتائج</h4>
+                <p>لا توجد كورسات تطابق هذا الفلتر</p>
+                <button class="reset-filter-btn" (click)="setFilter('all')">
+                  <i class="pi pi-refresh"></i>
+                  عرض الكل
+                </button>
+              </div>
+            }
+
+          </section>
+        }
+
+        <!-- ════════════════════════
+                  Empty State
+        ════════════════════════ -->
+        @if (!data()!.teachers.length && !data()!.courses.length) {
+          <div class="empty-state">
+            <div class="empty-illustration">
+              <div class="empty-circle">
+                <i class="pi pi-inbox"></i>
+              </div>
+              <div class="empty-dots">
+                <span></span><span></span><span></span>
+              </div>
+            </div>
+            <h3>لا يوجد محتوى بعد</h3>
+            <p>لم يتم إضافة كورسات أو مدرسين لهذه المادة حتى الآن</p>
+            <a routerLink="/subjects" class="back-btn">
+              <i class="pi pi-arrow-right"></i>
+              <span>العودة للمواد</span>
+            </a>
+          </div>
+        }
+
+      }
+    </div>
+  </div>
+</div>

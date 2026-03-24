@@ -1,0 +1,361 @@
+<div class="teacher-profile-page" dir="rtl">
+
+  <!-- ============ Loading State ============ -->
+  @if (isLoading()) {
+    <div class="loading-container">
+      <div class="container">
+        <div class="loading-hero">
+          <div class="loading-profile">
+            <p-skeleton shape="circle" size="180px"></p-skeleton>
+            <div class="loading-info">
+              <p-skeleton height="2.5rem" width="250px"></p-skeleton>
+              <p-skeleton height="1.2rem" width="180px" styleClass="mt-3"></p-skeleton>
+              <p-skeleton height="1rem" width="150px" styleClass="mt-2"></p-skeleton>
+              <div class="loading-btns mt-4">
+                <p-skeleton height="45px" width="140px" borderRadius="25px"></p-skeleton>
+                <p-skeleton shape="circle" size="45px"></p-skeleton>
+              </div>
+            </div>
+          </div>
+          <div class="loading-stats">
+            @for (i of [1,2,3,4]; track i) {
+              <p-skeleton height="120px" borderRadius="16px"></p-skeleton>
+            }
+          </div>
+        </div>
+        <div class="loading-courses mt-5">
+          <p-skeleton height="2rem" width="200px" styleClass="mb-4"></p-skeleton>
+          <div class="loading-grid">
+            @for (i of [1,2,3]; track i) {
+              <p-skeleton height="380px" borderRadius="20px"></p-skeleton>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- ============ Error State ============ -->
+  @if (error() && !isLoading()) {
+    <div class="error-container">
+      <div class="error-card">
+        <div class="error-icon">
+          <i class="pi pi-times-circle"></i>
+        </div>
+        <h3>عذراً، حدث خطأ!</h3>
+        <p>{{ error() }}</p>
+        <p-button
+          label="إعادة المحاولة"
+          icon="pi pi-refresh"
+          styleClass="p-button-lg"
+          (onClick)="loadTeacher(teacher()?.teacherId || '')">
+        </p-button>
+      </div>
+    </div>
+  }
+
+  <!-- ============ Main Content ============ -->
+  @if (teacher() && !isLoading()) {
+
+    <!-- ======== Hero Section ======== -->
+    <section class="hero-section">
+      <div class="hero-bg">
+        <div class="hero-gradient"></div>
+        <div class="hero-shapes">
+          <div class="shape shape-1"></div>
+          <div class="shape shape-2"></div>
+          <div class="shape shape-3"></div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="hero-content">
+
+          <!-- Profile Section -->
+          <div class="profile-section">
+
+            <!-- Avatar -->
+            <div class="avatar-container">
+              <div class="avatar-ring">
+                <img
+                  [src]="teacher()!.imageProfile"
+                  [alt]="teacher()!.teacherName"
+                  class="avatar-img"
+                  (error)="handleImageError($event)">
+              </div>
+              <div class="verified-badge" pTooltip="مدرس موثق" tooltipPosition="top">
+                <i class="pi pi-verified"></i>
+              </div>
+              <div class="status-indicator"></div>
+            </div>
+
+            <!-- Info -->
+            <div class="profile-details">
+
+              <div class="name-section">
+                <h1>{{ teacher()!.teacherName }}</h1>
+                <p-tag
+                  [value]="teacher()!.subject"
+                  severity="info"
+                  styleClass="subject-badge">
+                </p-tag>
+              </div>
+
+              <p class="bio-preview">{{ teacher()!.teacherBio }}</p>
+
+              <!-- Rating -->
+              <div class="rating-section">
+                <div class="rating-stars">
+                  @for (i of [1,2,3,4,5]; track i) {
+                    <i class="pi"
+                       [class.pi-star-fill]="i <= teacher()!.averageRating"
+                       [class.pi-star]="i > teacher()!.averageRating">
+                    </i>
+                  }
+                </div>
+                <span class="rating-number">{{ teacher()!.averageRating }}/5</span>
+                <span class="rating-count">({{ teacher()!.totalstudent }} تقييم)</span>
+              </div>
+
+              <!-- Actions -->
+              <div class="action-buttons">
+                <p-button
+                  label="تواصل معي"
+                  icon="pi pi-envelope"
+                  styleClass="primary-btn">
+                </p-button>
+                <p-button
+                  icon="pi pi-heart"
+                  [rounded]="true"
+                  [outlined]="true"
+                  styleClass="icon-btn"
+                  pTooltip="إضافة للمفضلة"
+                  tooltipPosition="top">
+                </p-button>
+                <p-button
+                  icon="pi pi-share-alt"
+                  [rounded]="true"
+                  [outlined]="true"
+                  styleClass="icon-btn"
+                  pTooltip="مشاركة"
+                  tooltipPosition="top"
+                  (onClick)="shareProfile()">
+                </p-button>
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- Stats Grid -->
+          <div class="stats-grid">
+
+            <div class="stat-box students-stat">
+              <div class="stat-icon-wrapper">
+                <i class="pi pi-users"></i>
+              </div>
+              <div class="stat-data">
+                <span class="stat-number">{{ teacher()!.totalstudent }}</span>
+                <span class="stat-label">طالب مشترك</span>
+              </div>
+            </div>
+
+            <div class="stat-box courses-stat">
+              <div class="stat-icon-wrapper">
+                <i class="pi pi-book"></i>
+              </div>
+              <div class="stat-data">
+                <span class="stat-number">{{ teacher()!.pagedResult.totalCount }}</span>
+                <span class="stat-label">كورس متاح</span>
+              </div>
+            </div>
+
+            <div class="stat-box hours-stat">
+              <div class="stat-icon-wrapper">
+                <i class="pi pi-clock"></i>
+              </div>
+              <div class="stat-data">
+                <span class="stat-number">{{ teacher()!.totalhour }}</span>
+                <span class="stat-label">ساعة محتوى</span>
+              </div>
+            </div>
+
+            <div class="stat-box rating-stat">
+              <div class="stat-icon-wrapper">
+                <i class="pi pi-star-fill"></i>
+              </div>
+              <div class="stat-data">
+                <span class="stat-number">{{ teacher()!.averageRating }}</span>
+                <span class="stat-label">تقييم عام</span>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ======== Info Section ======== -->
+    <section class="info-section">
+      <div class="container">
+        <div class="info-grid">
+
+          <!-- About Card -->
+          <div class="info-card about-card">
+            <div class="card-icon">
+              <i class="pi pi-user"></i>
+            </div>
+            <div class="card-content">
+              <h3>نبذة عن المدرس</h3>
+              <p>{{ teacher()!.teacherBio }}</p>
+
+              <div class="contact-details">
+                <div class="contact-item">
+                  <div class="contact-icon">
+                    <i class="pi pi-envelope"></i>
+                  </div>
+                  <div class="contact-text">
+                    <span class="label">البريد الإلكتروني</span>
+                    <span class="value">{{ teacher()!.teacherEmail }}</span>
+                  </div>
+                </div>
+                <div class="contact-item">
+                  <div class="contact-icon">
+                    <i class="pi pi-book"></i>
+                  </div>
+                  <div class="contact-text">
+                    <span class="label">التخصص</span>
+                    <span class="value">{{ teacher()!.subject }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stats Summary Card -->
+          <div class="info-card stats-summary-card">
+            <div class="card-icon">
+              <i class="pi pi-chart-bar"></i>
+            </div>
+            <div class="card-content">
+              <h3>إحصائيات سريعة</h3>
+
+              <div class="quick-stats">
+                <div class="quick-stat">
+                  <div class="stat-bar">
+                    <div class="bar-fill" [style.width.%]="getPercentage(teacher()!.totalstudent, 100)"></div>
+                  </div>
+                  <div class="stat-info">
+                    <span>الطلاب</span>
+                    <strong>{{ teacher()!.totalstudent }}</strong>
+                  </div>
+                </div>
+
+                <div class="quick-stat">
+                  <div class="stat-bar">
+                    <div class="bar-fill courses" [style.width.%]="getPercentage(teacher()!.pagedResult.totalCount, 20)"></div>
+                  </div>
+                  <div class="stat-info">
+                    <span>الكورسات</span>
+                    <strong>{{ teacher()!.pagedResult.totalCount }}</strong>
+                  </div>
+                </div>
+
+                <div class="quick-stat">
+                  <div class="stat-bar">
+                    <div class="bar-fill hours" [style.width.%]="getPercentage(teacher()!.totalhour, 100)"></div>
+                  </div>
+                  <div class="stat-info">
+                    <span>الساعات</span>
+                    <strong>{{ teacher()!.totalhour }}</strong>
+                  </div>
+                </div>
+
+                <div class="quick-stat">
+                  <div class="stat-bar">
+                    <div class="bar-fill rating" [style.width.%]="(teacher()!.averageRating / 5) * 100"></div>
+                  </div>
+                  <div class="stat-info">
+                    <span>التقييم</span>
+                    <strong>{{ teacher()!.averageRating }}/5</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ======== Courses Section ======== -->
+    <section class="courses-section">
+      <div class="container">
+
+        <!-- Section Header -->
+        <div class="section-heading">
+          <div class="heading-text">
+            <h2>
+              <i class="pi pi-play-circle"></i>
+              الكورسات المتاحة
+            </h2>
+            <p>استكشف كورسات {{ teacher()!.teacherName }} في {{ teacher()!.subject }}</p>
+          </div>
+          <div class="heading-badge">
+            <span class="count">{{ teacher()!.pagedResult.totalCount }}</span>
+            <span class="label">كورس</span>
+          </div>
+        </div>
+
+        <!-- Courses -->
+        @if (courses().length > 0) {
+
+          <div class="courses-grid">
+            @for (course of courses(); track course.id; let idx = $index) {
+              <app-course-card [course]="course" [i]="idx"></app-course-card>
+            }
+          </div>
+
+          <!-- Pagination -->
+          @if (teacher()!.pagedResult.totalPages > 1) {
+            <div class="pagination-container">
+              <p-paginator
+                [rows]="pageSize()"
+                [totalRecords]="totalRecords()"
+                [first]="(currentPage() - 1) * pageSize()"
+                (onPageChange)="onPageChange($event)"
+                [showFirstLastIcon]="true"
+                [showPageLinks]="true"
+                [pageLinkSize]="5"
+                styleClass="custom-paginator">
+              </p-paginator>
+            </div>
+          }
+
+        } @else {
+
+          <!-- Empty State -->
+          <div class="empty-courses">
+            <div class="empty-illustration">
+              <i class="pi pi-folder-open"></i>
+            </div>
+            <h3>لا توجد كورسات متاحة</h3>
+            <p>لم يقم {{ teacher()!.teacherName }} بإضافة أي كورسات بعد</p>
+            <p-button
+              label="تصفح مدرسين آخرين"
+              icon="pi pi-users"
+              routerLink="/teachers"
+              styleClass="p-button-outlined">
+            </p-button>
+          </div>
+
+        }
+
+      </div>
+    </section>
+
+
+  }
+
+</div>

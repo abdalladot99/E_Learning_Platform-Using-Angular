@@ -20,9 +20,12 @@
       "default",
       {
         "ignore": [
-          "backdrop-filter"
+          "backdrop-filter",
+          "mask-image",
+          "user-select"
         ]
       }
-    ]
+    ],
+    "button-type": "off"
   }
 }

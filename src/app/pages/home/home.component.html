@@ -1,135 +1,178 @@
-<div class="home-page">
+<div class="home-page" dir="rtl">
+<!-- ============ Hero Section ============ -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="hero-gradient"></div>
 
-  <!-- ============ Hero Section ============ -->
-  <section class="hero">
-    <div class="hero-content">
-      <h1>منصة التعلم الإلكتروني</h1>
-      <p>اكتشف أفضل الكورسات مع أفضل المدرسين</p>
-      <div class="search-box">
-        <input type="text" placeholder="ابحث عن كورس...">
-        <button><i class="fas fa-search"></i> بحث</button>
+    <!-- ✅ 3D Scene -->
+    <div class="hero-3d-scene">
+      <div class="cube-wrapper">
+        <div class="cube">
+          <div class="cube-face cube-front">
+            <i class="pi pi-book"></i>
+          </div>
+          <div class="cube-face cube-back">
+            <i class="pi pi-star"></i>
+          </div>
+          <div class="cube-face cube-right">
+            <i class="pi pi-graduation-cap"></i>
+          </div>
+          <div class="cube-face cube-left">
+            <i class="pi pi-users"></i>
+          </div>
+          <div class="cube-face cube-top">
+            <i class="pi pi-bolt"></i>
+          </div>
+          <div class="cube-face cube-bottom">
+            <i class="pi pi-heart"></i>
+          </div>
+        </div>
       </div>
+
+      <div class="sphere sphere-1"></div>
+      <div class="sphere sphere-2"></div>
+      <div class="sphere sphere-3"></div>
+
+      <div class="pyramid-wrapper">
+        <div class="pyramid"></div>
+      </div>
+
+      <div class="ring ring-1"></div>
+      <div class="ring ring-2"></div>
+      <div class="ring ring-3"></div>
+
+      <div class="grid-floor"></div>
+    </div>
+    <!-- ✅ End 3D Scene -->
+
+    <div class="hero-particles">
+      <div class="particle particle-1"></div>
+      <div class="particle particle-2"></div>
+      <div class="particle particle-3"></div>
+      <div class="particle particle-4"></div>
+      <div class="particle particle-5"></div>
     </div>
     <div class="hero-shapes">
       <div class="shape shape-1"></div>
       <div class="shape shape-2"></div>
       <div class="shape shape-3"></div>
     </div>
-  </section>
+  </div>
 
-  <!-- ============ Loading State ============ -->
-  @if (isLoading()) {
-    <div class="loading-container">
-      <div class="loader">
-        <div class="spinner"></div>
-        <p>جاري تحميل البيانات...</p>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <i class="pi pi-bolt"></i>
+        <span>أفضل منصة تعليمية في مصر</span>
       </div>
-    </div>
-  }
+      <h1>
+        <span class="text-gradient">تعلّم</span> بلا حدود
+        <br>
+        مع أفضل المدرسين
+      </h1>
+      <p>اكتشف آلاف الكورسات في جميع المواد الدراسية مع نخبة من أفضل المدرسين. ابدأ رحلة التفوق الآن!</p>
 
-  <!-- ============ Error State ============ -->
-  @if (errorMessage()) {
-    <div class="error-container">
-      <div class="error-card">
-        <i class="fas fa-exclamation-triangle"></i>
-        <h3>حدث خطأ!</h3>
-        <p>{{ errorMessage() }}</p>
-        <button (click)="getDataHome()">إعادة المحاولة</button>
-      </div>
-    </div>
-  }
-
-  <!-- ============ Main Content ============ -->
-  @if (!isLoading() && !errorMessage()) {
-
-    <!-- ============ Statistics Section ============ -->
-    <section class="stats-section">
-      <div class="container">
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-icon courses">
-              <i class="fas fa-book-open"></i>
-            </div>
-            <div class="stat-info">
-              <h3>{{ totalCourses() }}</h3>
-              <p>كورس متاح</p>
-            </div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-icon users">
-              <i class="fas fa-users"></i>
-            </div>
-            <div class="stat-info">
-              <h3>{{ totalUsers() }}</h3>
-              <p>طالب مسجل</p>
-            </div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-icon teachers">
-              <i class="fas fa-chalkboard-teacher"></i>
-            </div>
-            <div class="stat-info">
-              <h3>{{ totalTeachers() }}</h3>
-              <p>مدرس محترف</p>
-            </div>
-          </div>
+      <div class="hero-search">
+        <div class="search-box">
+          <i class="pi pi-search"></i>
+          <input type="text" placeholder="ابحث عن كورس، مدرس، أو مادة...">
+          <button class="search-btn">
+            <span>ابحث</span>
+            <i class="pi pi-arrow-left"></i>
+          </button>
         </div>
       </div>
-    </section>
+    </div>
+
+    <div class="hero-image">
+      <div class="image-wrapper">
+        <img
+          src="assets/images/hero-student.png"
+          alt="Student Learning"
+          onerror="this.style.display='none'"
+        >
+        <div class="floating-card card-1">
+          <i class="pi pi-check-circle"></i>
+          <span>شهادات معتمدة</span>
+        </div>
+        <div class="floating-card card-2">
+          <i class="pi pi-play-circle"></i>
+          <span>دروس تفاعلية</span>
+        </div>
+        <div class="floating-card card-3">
+          <i class="pi pi-users"></i>
+          <span>+{{ totalUsers() }} طالب</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ============ Subjects Section ============ -->
+<section class="subjects-section">
+  <div class="container">
+    <div class="section-header centered">
+      <span class="section-badge">
+        <i class="pi pi-th-large"></i>
+        تصفح حسب المادة
+      </span>
+      <h2>المواد الدراسية</h2>
+      <p>اختر المادة لعرض المدرسين والكورسات الخاصة بها</p>
+    </div>
+
+    <div class="subjects-grid-new">
+      @for (subject of subjects; track subject.name; let i = $index) {
+        <div
+          [routerLink]="['/user/teacher-by-subject', subject.name]"
+          class="subject-chip"
+          [style.--subject-color]="subject.color"
+          [style.animation-delay]="(i * 0.1) + 's'"
+          (click)="filterBySubject(subject.name)"
+        >
+          <div class="subject-chip-icon">
+            <i [class]="subject.icon"></i>
+          </div>
+          <span class="subject-chip-name">{{ subject.name }}</span>
+          <div class="subject-chip-arrow">
+            <i class="pi pi-arrow-left"></i>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+
 
     <!-- ============ Popular Courses Section ============ -->
-    <section class="courses-section">
+    <section class="courses-section popular-courses">
       <div class="container">
         <div class="section-header">
-          <h2><i class="fas fa-fire"></i> الكورسات الأكثر شعبية</h2>
-          <a href="#" class="view-all">عرض الكل <i class="fas fa-arrow-left"></i></a>
+          <div class="header-text">
+            <span class="section-badge">
+              <i class="pi pi-fire"></i>
+              الأكثر مشاهدة
+            </span>
+            <h2>الكورسات الأكثر شعبية</h2>
+          </div>
+          <a routerLink="/courses" class="view-all-btn">
+            عرض الكل
+            <i class="pi pi-arrow-left"></i>
+          </a>
         </div>
 
         <div class="courses-grid">
-          @for (course of popularCourses(); track course.id) {
-            <div class="course-card">
-              <div class="course-image">
-                <img [src]="course.imageUrl" [alt]="course.title">
-                <div class="course-badge">
-                  <span class="subject">{{ course.subject }}</span>
-                </div>
-                <div class="course-overlay">
-                  <button class="preview-btn">
-                    <i class="fas fa-play"></i>
-                  </button>
-                </div>
-              </div>
-
-              <div class="course-content">
-                <div class="course-meta">
-                  <span class="level"><i class="fas fa-signal"></i> {{ course.level }}</span>
-                  <span class="duration"><i class="fas fa-clock"></i> {{ course.durationHours }} ساعة</span>
-                </div>
-
-                <h3 class="course-title">{{ course.title }}</h3>
-
-                <p class="course-description">{{ course.description | slice:0:80 }}...</p>
-
-                <div class="course-teacher">
-                  <img src={{course.imageUrl}} alt="teacher">
-                  <span>{{ course.techerName }}</span>
-                </div>
-
-                <div class="course-footer">
-                  <div class="course-price">
-                    <span class="price">{{ course.price }}</span>
-                    <span class="currency">جنيه</span>
-                  </div>
-                  <button class="enroll-btn">اشترك الآن</button>
-                </div>
-              </div>
-            </div>
+          @for (course of popularCourses(); track course.id; let i = $index) {
+            <app-course-card [course]="course" [i]="i" [status]="'popularCourses'"></app-course-card>
           } @empty {
             <div class="empty-state">
-              <i class="fas fa-folder-open"></i>
-              <p>لا توجد كورسات متاحة حالياً</p>
+              <div class="empty-icon">
+                <i class="pi pi-folder-open"></i>
+              </div>
+              <h4>لا توجد كورسات متاحة حالياً</h4>
+              <p>سيتم إضافة كورسات جديدة قريباً</p>
             </div>
           }
         </div>
@@ -137,61 +180,32 @@
     </section>
 
     <!-- ============ Recent Courses Section ============ -->
-    <section class="courses-section recent">
+    <section class="courses-section recent-courses">
       <div class="container">
         <div class="section-header">
-          <h2><i class="fas fa-clock"></i> أحدث الكورسات</h2>
-          <a href="#" class="view-all">عرض الكل <i class="fas fa-arrow-left"></i></a>
+          <div class="header-text">
+            <span class="section-badge new-badge">
+              <i class="pi pi-clock"></i>
+              جديد
+            </span>
+            <h2>أحدث الكورسات</h2>
+          </div>
+          <a routerLink="/courses" class="view-all-btn">
+            عرض الكل
+            <i class="pi pi-arrow-left"></i>
+          </a>
         </div>
 
         <div class="courses-grid">
           @for (course of recentCourses(); track course.id; let i = $index) {
-            <div class="course-card" [class.featured]="i === 0">
-              <div class="course-image">
-                <img [src]="course.imageUrl" [alt]="course.title">
-                @if (i === 0) {
-                  <div class="new-badge">جديد</div>
-                }
-                <div class="course-badge">
-                  <span class="subject">{{ course.subject }}</span>
-                </div>
-                <div class="course-overlay">
-                  <button class="preview-btn">
-                    <i class="fas fa-play"></i>
-                  </button>
-                </div>
-              </div>
-
-              <div class="course-content">
-                <div class="course-meta">
-                  <span class="level"><i class="fas fa-signal"></i> {{ course.level }}</span>
-                  <span class="academic-year">
-                    <i class="fas fa-graduation-cap"></i> {{ course.academicYearTarget }}
-                  </span>
-                </div>
-
-                <h3 class="course-title">{{ course.title }}</h3>
-
-                <p class="course-description">{{ course.description | slice:0:80 }}...</p>
-
-                <div class="course-teacher">
-                  <img src={{course.imageUrl}} alt="teacher">
-                  <span>{{ course.techerName }}</span>
-                </div>
-
-                <div class="course-footer">
-                  <div class="course-price">
-                    <span class="price">{{ course.price }}</span>
-                    <span class="currency">جنيه</span>
-                  </div>
-                  <button class="enroll-btn">اشترك الآن</button>
-                </div>
-              </div>
-            </div>
+            <app-course-card [course]="course" [i]="i" [status]="'newCourse'"></app-course-card>
           } @empty {
             <div class="empty-state">
-              <i class="fas fa-folder-open"></i>
-              <p>لا توجد كورسات جديدة</p>
+              <div class="empty-icon">
+                <i class="pi pi-folder-open"></i>
+              </div>
+              <h4>لا توجد كورسات جديدة</h4>
+              <p>تابعنا لمعرفة آخر الإضافات</p>
             </div>
           }
         </div>
@@ -201,66 +215,248 @@
     <!-- ============ Top Teachers Section ============ -->
     <section class="teachers-section">
       <div class="container">
-        <div class="section-header">
-          <h2><i class="fas fa-star"></i> أفضل المدرسين</h2>
-          <a href="#" class="view-all">عرض الكل <i class="fas fa-arrow-left"></i></a>
+        <div class="section-header centered">
+          <span class="section-badge">
+            <i class="pi pi-star-fill"></i>
+            نخبة المدرسين
+          </span>
+          <h2>أفضل المدرسين على المنصة</h2>
+          <p>تعلم مع أفضل المعلمين المتخصصين في مختلف المواد</p>
         </div>
 
         <div class="teachers-grid">
           @for (teacher of topTeachers(); track teacher.teacherId; let i = $index, first = $first) {
-            <div class="teacher-card" [class.top-teacher]="first">
+            <div class="teacher-card"  [class.featured-teacher]="first"
+            [routerLink]="['/user/teacher-profile', teacher.teacherId]">
+
               @if (first) {
-                <div class="crown-badge">
-                  <i class="fas fa-crown"></i>
+                <div class="top-badge">
+                  <i class="pi pi-crown"></i>
+                  <span>الأفضل</span>
                 </div>
               }
 
-              <div class="teacher-avatar">
+              <div class="teacher-avatar-wrapper">
                 @if (teacher.profilePictureUrl) {
-                  <img [src]="teacher.profilePictureUrl" [alt]="teacher.fullName">
+                  <img [src]="teacher.profilePictureUrl" [alt]="teacher.fullName" class="teacher-avatar">
                 } @else {
                   <div class="avatar-placeholder">
-                    <i class="fas fa-user"></i>
+                    <i class="pi pi-user"></i>
                   </div>
                 }
+                <div class="online-indicator"></div>
               </div>
 
-              <div class="teacher-info">
-                <h3>{{ teacher.fullName }}</h3>
-                <span class="subject-badge">{{ teacher.subject }}</span>
-                <p class="bio">{{ teacher.bio }}</p>
+              <div class="teacher-content">
+                <h3 class="teacher-name">{{ teacher.fullName }}</h3>
+                <span class="teacher-subject">{{ teacher.subject }}</span>
+
+                @if (teacher.bio) {
+                  <p class="teacher-bio">{{ teacher.bio }}</p>
+                }
 
                 <div class="teacher-stats">
-                  <div class="stat">
-                    <i class="fas fa-star"></i>
+                  <div class="stat-item">
+                    <i class="pi pi-star-fill"></i>
                     <span>{{ teacher.averageRating || 'جديد' }}</span>
                   </div>
-                  <div class="stat">
-                    <i class="fas fa-user-graduate"></i>
-                    <span>{{ teacher.studentsCount }} طالب</span>
+                  <div class="stat-item">
+                    <i class="pi pi-users"></i>
+                    <span>{{ teacher.studentsCount }}</span>
                   </div>
-                  <div class="stat">
-                    <i class="fas fa-book"></i>
-                    <span>{{ teacher.coursesCount }} كورس</span>
+                  <div class="stat-item">
+                    <i class="pi pi-book"></i>
+                    <span>{{ teacher.coursesCount }}</span>
                   </div>
                 </div>
 
-                <button class="view-profile-btn">
-                  عرض الملف الشخصي
-                  <i class="fas fa-arrow-left"></i>
+                <button class="profile-btn">
+                  <span>عرض الملف</span>
+                  <i class="pi pi-arrow-left"></i>
                 </button>
               </div>
+
             </div>
           } @empty {
-            <div class="empty-state">
-              <i class="fas fa-user-slash"></i>
-              <p>لا يوجد مدرسين متاحين</p>
+            <div class="empty-state full-width">
+              <div class="empty-icon">
+                <i class="pi pi-users"></i>
+              </div>
+              <h4>لا يوجد مدرسين متاحين</h4>
+              <p>سيتم إضافة مدرسين جدد قريباً</p>
             </div>
           }
+        </div>
+
+        <div class="section-footer">
+          <a routerLink="/teachers" class="browse-all-btn">
+            <i class="pi pi-users"></i>
+            تصفح جميع المدرسين
+          </a>
         </div>
       </div>
     </section>
 
 
-  }
+
+
+
+<!-- ============ Academic Levels Section ============ -->
+<section class="levels-section">
+  <div class="container">
+    <div class="section-header centered">
+      <span class="section-badge">
+        <i class="pi pi-graduation-cap"></i>
+        المراحل التعليمية
+      </span>
+      <h2>اختر مرحلتك الدراسية</h2>
+      <p>محتوى تعليمي مخصص لكل مرحلة دراسية</p>
+    </div>
+
+    <div class="stages-timeline">
+
+      <!-- ── المرحلة الابتدائية ── -->
+      <div class="stage-block" [routerLink]="['/user/courses/level']"  [queryParams]="{ academicYear: 'الابتدائي' }">>
+        <div class="stage-dot primary-dot">
+          <i class="pi pi-star"></i>
+        </div>
+
+        <div class="stage-content-box primary-stage">
+          <div class="stage-top">
+            <span class="stage-level-badge">
+              <i class="pi pi-flag"></i>
+              مناهج حديثة
+            </span>
+            <span class="stage-number">01</span>
+          </div>
+
+          <h3 class="stage-title">المرحلة الابتدائية</h3>
+
+          <p class="stage-desc">
+            البداية الصحيحة لمستقبل مشرق. نركز على المهارات
+            الأساسية بأسلوب قصصي ممتع يشجع الإبداع.
+          </p>
+
+          <div class="stage-tags-wrap">
+            <span class="tag">تأسيس</span>
+            <span class="tag">تفاعلي</span>
+            <span class="tag">لغات</span>
+            <span class="tag">عربي</span>
+            <span class="tag">حساب</span>
+            <span class="tag">علوم</span>
+            <span class="tag">دراسات</span>
+            <span class="tag">تكنولوجيا</span>
+          </div>
+
+          <button
+            class="stage-btn"
+            routerLink="/courses"
+            [queryParams]="{ level: 'primary' }"
+          >
+            استكشف الكورسات
+            <i class="pi pi-arrow-left"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── المرحلة الإعدادية ── -->
+      <div class="stage-block" [routerLink]="['/user/courses/level']"  [queryParams]="{ academicYear: 'الإعدادي' }">
+        <div class="stage-dot prep-dot">
+          <i class="pi pi-book"></i>
+        </div>
+
+        <div class="stage-content-box prep-stage">
+          <div class="stage-top">
+            <span class="stage-level-badge">
+              <i class="pi pi-compass"></i>
+              علوم متقدمة
+            </span>
+            <span class="stage-number">02</span>
+          </div>
+
+          <h3 class="stage-title">المرحلة الإعدادية</h3>
+
+          <p class="stage-desc">
+            مرحلة بناء الوعي. مناهج متعمقة مع تطبيقات عملية
+            وتجارب افتراضية تنمي التفكير النقدي.
+          </p>
+
+          <div class="stage-tags-wrap">
+            <span class="tag">رياضيات</span>
+            <span class="tag">علوم</span>
+            <span class="tag">لغة عربية</span>
+            <span class="tag">إنجليزي</span>
+            <span class="tag">دراسات</span>
+            <span class="tag">فرنسي</span>
+            <span class="tag">حاسب آلي</span>
+            <span class="tag">شرعي</span>
+          </div>
+
+          <button
+            class="stage-btn"
+            routerLink="/courses"
+            [queryParams]="{ level: 'preparatory' }"
+          >
+            استكشف الكورسات
+            <i class="pi pi-arrow-left"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── المرحلة الثانوية ── -->
+      <div class="stage-block featured-stage-block" [routerLink]="['/user/courses/level']"  [queryParams]="{ academicYear: 'الثانوي' }">
+        <div class="stage-dot secondary-dot">
+          <i class="pi pi-graduation-cap"></i>
+        </div>
+
+        <div class="stage-content-box secondary-stage">
+          <!-- Featured Badge -->
+          <div class="featured-ribbon">
+            <i class="pi pi-bolt"></i>
+            الأكثر طلباً
+          </div>
+
+          <div class="stage-top">
+            <span class="stage-level-badge featured-badge-chip">
+              <i class="pi pi-send"></i>
+              تأهيل جامعي
+            </span>
+            <span class="stage-number featured-number">03</span>
+          </div>
+
+          <h3 class="stage-title">المرحلة الثانوية</h3>
+
+          <p class="stage-desc">
+            بوابتك للجامعة. تركيز مكثف على الاختبارات والتحليل
+            النقدي والتأهيل الجامعي الشامل.
+          </p>
+
+          <div class="stage-tags-wrap">
+            <span class="tag">فيزياء</span>
+            <span class="tag">كيمياء</span>
+            <span class="tag">رياضيات</span>
+            <span class="tag">أحياء</span>
+            <span class="tag">تاريخ</span>
+            <span class="tag">جغرافيا</span>
+            <span class="tag">فلسفة</span>
+            <span class="tag">علم نفس</span>
+            <span class="tag">شرعي</span>
+          </div>
+
+          <button
+            class="stage-btn featured-btn"
+            routerLink="/courses"
+            [queryParams]="{ level: 'secondary' }"
+          >
+            استكشف الكورسات
+            <i class="pi pi-arrow-left"></i>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
 </div>

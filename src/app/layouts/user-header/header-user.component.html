@@ -42,95 +42,90 @@
           }
         </nav>
       </ng-template>
+<!-- ======= END: Actions ======= -->
+<ng-template pTemplate="end">
+  <div class="end-section">
 
-      <!-- ======= END: Actions ======= -->
-      <ng-template pTemplate="end">
-        <div class="end-section">
+    <!-- Search -->
+    <button class="icon-btn" aria-label="بحث">
+      <i class="pi pi-search"></i>
+    </button>
 
-          <!-- Search -->
-          <p-button
-            icon="pi pi-search"
-            [rounded]="true"
-            [text]="true"
-            severity="secondary">
-          </p-button>
+    <!-- Notifications -->
+    @if (isLoggedIn) {
+      <button class="icon-btn notif-btn" aria-label="الإشعارات">
+        <i class="pi pi-bell"></i>
+        <span class="notif-badge">3</span>
+      </button>
+    }
 
-          <!-- Notifications -->
-          @if (isLoggedIn) {
-            <p-button
-              icon="pi pi-bell"
-              [rounded]="true"
-              [text]="true"
-              severity="secondary"
-              badge="3"
-              badgeClass="p-badge-danger">
-            </p-button>
-          }
+    <!-- User Menu -->
+    @if (isLoggedIn) {
+      <div class="user-menu" (click)="op.toggle($event)">
+        <p-avatar
+          [image]="user.avatar"
+          shape="circle"
+          size="normal">
+        </p-avatar>
+        <span class="user-name">{{ user.name }}</span>
+        <i class="pi pi-angle-down"></i>
+      </div>
+    } @else {
+      <div class="auth-btns">
+        <button class="btn-ghost" [routerLink]="['/login']">
+          <i class="pi pi-sign-in"></i>
+          <span>دخول</span>
+        </button>
+        <button class="btn-primary" [routerLink]="['/register']">
+          <i class="pi pi-user-plus"></i>
+          <span>تسجيل</span>
+        </button>
+      </div>
+    }
 
-          <!-- User / Auth -->
-          @if (isLoggedIn) {
-            <div class="user-menu" (click)="op.toggle($event)">
-              <p-avatar
-                [image]="user.avatar"
-                shape="circle"
-                size="normal">
-              </p-avatar>
-              <span class="user-name">{{ user.name }}</span>
-              <i class="pi pi-chevron-down"></i>
-            </div>
-          } @else {
-            <div class="auth-btns">
-              <p-button
-                label="دخول"
-                icon="pi pi-sign-in"
-                [text]="true">
-              </p-button>
-              <p-button
-                label="تسجيل"
-                icon="pi pi-user-plus"
-                [rounded]="true">
-              </p-button>
-            </div>
-          }
-
-        </div>
-      </ng-template>
+  </div>
+</ng-template>
 
     </p-toolbar>
 
   </div>
+<!-- ======= User Menu Overlay ======= -->
+<p-overlayPanel #op>
+  <div class="user-panel">
 
-  <!-- ======= User Menu Overlay ======= -->
-  <p-overlayPanel #op>
-    <div class="user-panel">
-      <div class="user-panel-header">
-        <p-avatar [image]="user.avatar" size="large" shape="circle"></p-avatar>
-        <div>
-          <h4>{{ user.name }}</h4>
-          <span>{{ user.role }}</span>
-        </div>
-      </div>
-      <div class="user-panel-menu">
-        <a routerLink="/profile" class="panel-item">
-          <i class="pi pi-user"></i>
-          <span>الملف الشخصي</span>
-        </a>
-        <a routerLink="/my-courses" class="panel-item">
-          <i class="pi pi-book"></i>
-          <span>كورساتي</span>
-        </a>
-        <a routerLink="/settings" class="panel-item">
-          <i class="pi pi-cog"></i>
-          <span>الإعدادات</span>
-        </a>
-        <div class="panel-divider"></div>
-        <a (click)="logout()" class="panel-item logout">
-          <i class="pi pi-sign-out"></i>
-          <span>تسجيل خروج</span>
-        </a>
+    <div class="user-panel-header">
+      <p-avatar [image]="user.avatar" size="large" shape="circle"></p-avatar>
+      <div>
+        <h4>{{ user.name }}</h4>
+        <span>{{ user.role }}</span>
       </div>
     </div>
-  </p-overlayPanel>
+
+    <div class="user-panel-menu">
+      <a routerLink="/profile" class="panel-item">
+        <i class="pi pi-user"></i>
+        <span>الملف الشخصي</span>
+      </a>
+      <a routerLink="/my-courses" class="panel-item">
+        <i class="pi pi-book"></i>
+        <span>كورساتي</span>
+      </a>
+      <a routerLink="/settings" class="panel-item">
+        <i class="pi pi-cog"></i>
+        <span>الإعدادات</span>
+      </a>
+
+      <div class="panel-divider"></div>
+
+      <!-- ✅ Logout Button -->
+      <button class="panel-item logout" (click)="logout()">
+        <i class="pi pi-sign-out"></i>
+        <span>تسجيل الخروج</span>
+      </button>
+    </div>
+
+  </div>
+</p-overlayPanel>
 
   <!-- ======= Mobile Sidebar ======= -->
   <p-sidebar
@@ -168,12 +163,19 @@
         }
       </nav>
 
-      @if (!isLoggedIn) {
-        <div class="sidebar-auth">
-          <p-button label="تسجيل دخول" icon="pi pi-sign-in" styleClass="w-full" [outlined]="true"></p-button>
-          <p-button label="حساب جديد" icon="pi pi-user-plus" styleClass="w-full"></p-button>
-        </div>
-      }
+      <!-- Sidebar Auth Buttons -->
+@if (!isLoggedIn) {
+  <div class="sidebar-auth">
+    <button class="btn-ghost w-full"  [routerLink]="['/login']">
+      <i class="pi pi-sign-in"></i>
+      <span>تسجيل دخول</span>
+    </button>
+    <button class="btn-primary w-full" [routerLink]="['/register']">
+      <i class="pi pi-user-plus"></i>
+      <span>حساب جديد</span>
+    </button>
+  </div>
+}
     </div>
 
   </p-sidebar>

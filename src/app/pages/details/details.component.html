@@ -1,1 +1,405 @@
-<p>details works!</p>
+<p-toast position="top-left"></p-toast>
+
+<div class="course-details-page" dir="rtl">
+
+  <!-- ============ Loading State ============ -->
+  @if (isLoading()) {
+    <div class="loading-container">
+      <div class="container">
+        <div class="loading-grid">
+          <div class="loading-main">
+            <p-skeleton height="400px" styleClass="mb-4"></p-skeleton>
+            <p-skeleton height="2rem" width="70%" styleClass="mb-3"></p-skeleton>
+            <p-skeleton height="1rem" width="40%" styleClass="mb-4"></p-skeleton>
+            <p-skeleton height="6rem"></p-skeleton>
+          </div>
+          <div class="loading-sidebar">
+            <p-skeleton height="350px"></p-skeleton>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- ============ Error State ============ -->
+  @if (error() && !isLoading()) {
+    <div class="error-container">
+      <div class="error-card">
+        <i class="pi pi-exclamation-triangle"></i>
+        <h3>حدث خطأ!</h3>
+        <p>{{ error() }}</p>
+        <p-button
+          label="إعادة المحاولة"
+          icon="pi pi-refresh"
+          (onClick)="loadCourse(course()?.course_id || '')">
+        </p-button>
+      </div>
+    </div>
+  }
+
+  <!-- ============ Main Content ============ -->
+  @if (course() && !isLoading()) {
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="hero-background">
+        <img [src]="course()!.imageUrl" alt="">
+      </div>
+      <div class="hero-overlay"></div>
+
+      <div class="container">
+        <div class="hero-content">
+
+          <!-- Breadcrumb -->
+          <div class="breadcrumb">
+            <a routerLink="/">الرئيسية</a>
+            <i class="pi pi-chevron-left"></i>
+            <a routerLink="/courses">الكورسات</a>
+            <i class="pi pi-chevron-left"></i>
+            <span>{{ course()!.subject }}</span>
+          </div>
+
+          <!-- Course Title & Info -->
+          <div class="hero-info">
+            <div class="course-badges">
+              <p-tag [value]="course()!.subject" severity="info" styleClass="subject-tag"></p-tag>
+              <p-tag [value]="course()!.level" severity="success" styleClass="level-tag"></p-tag>
+              <p-tag [value]="course()!.academicYearTarget" severity="warning" styleClass="year-tag"></p-tag>
+            </div>
+
+            <h1 class="course-title">{{ course()!.title }}</h1>
+
+            <p class="course-brief">{{ course()!.description.slice(0, 150) }}...</p>
+
+            <!-- Teacher Info -->
+            <div class="teacher-info">
+              <p-avatar
+                icon="pi pi-user"
+                size="large"
+                shape="circle"
+                styleClass="teacher-avatar">
+              </p-avatar>
+              <div class="teacher-details">
+                <span class="teacher-label">المدرس</span>
+                <h4 class="teacher-name">{{ course()!.techerName }}</h4>
+              </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="quick-stats">
+              <div class="stat">
+                <i class="pi pi-clock"></i>
+                <span>{{ course()!.durationHours }} ساعة</span>
+              </div>
+              <div class="stat">
+                <i class="pi pi-video"></i>
+                <span>{{ course()!.videosCount }} فيديو</span>
+              </div>
+              <div class="stat">
+                <i class="pi pi-file"></i>
+                <span>{{ course()!.examsCount }} امتحان</span>
+              </div>
+              <div class="stat">
+                <i class="pi pi-calendar"></i>
+                <span>{{ formatDate(course()!.createdAt) }}</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Content Section -->
+    <section class="main-section">
+      <div class="container">
+        <div class="content-grid">
+
+          <!-- Left: Course Details -->
+          <div class="course-content">
+
+            <!-- Stats Cards -->
+            <div class="stats-cards">
+              <div class="stat-card videos">
+                <div class="stat-icon">
+                  <i class="pi pi-play-circle"></i>
+                </div>
+                <div class="stat-info">
+                  <h3>{{ course()!.videosCount }}</h3>
+                  <p>فيديو تعليمي</p>
+                </div>
+              </div>
+
+              <div class="stat-card quizzes">
+                <div class="stat-icon">
+                  <i class="pi pi-question-circle"></i>
+                </div>
+                <div class="stat-info">
+                  <h3>{{ course()!.quizeCount_fromAllVideos }}</h3>
+                  <p>اختبار قصير</p>
+                </div>
+              </div>
+
+              <div class="stat-card exams">
+                <div class="stat-icon">
+                  <i class="pi pi-file-edit"></i>
+                </div>
+                <div class="stat-info">
+                  <h3>{{ course()!.examsCount }}</h3>
+                  <p>امتحان شامل</p>
+                </div>
+              </div>
+
+              <div class="stat-card files">
+                <div class="stat-icon">
+                  <i class="pi pi-folder-open"></i>
+                </div>
+                <div class="stat-info">
+                  <h3>{{ course()!.filesCount }}</h3>
+                  <p>ملف مرفق</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tabs -->
+            <p-tabView styleClass="course-tabs">
+
+              <!-- About Tab -->
+              <p-tabPanel>
+                <ng-template pTemplate="header">
+                  <i class="pi pi-info-circle"></i>
+                  <span>عن الكورس</span>
+                </ng-template>
+
+                <div class="tab-content">
+                  <h3>وصف الكورس</h3>
+                  <p class="description">{{ course()!.description }}</p>
+
+                  <h3>ما ستتعلمه في هذا الكورس</h3>
+                  <ul class="learn-list">
+                    <li>
+                      <i class="pi pi-check-circle"></i>
+                      <span>شرح مبسط لجميع أجزاء المنهج</span>
+                    </li>
+                    <li>
+                      <i class="pi pi-check-circle"></i>
+                      <span>حل امتحانات السنوات السابقة</span>
+                    </li>
+                    <li>
+                      <i class="pi pi-check-circle"></i>
+                      <span>تدريبات وأسئلة متوقعة</span>
+                    </li>
+                    <li>
+                      <i class="pi pi-check-circle"></i>
+                      <span>ملخصات شاملة لكل وحدة</span>
+                    </li>
+                    <li>
+                      <i class="pi pi-check-circle"></i>
+                      <span>نصائح للتفوق في الامتحان</span>
+                    </li>
+                  </ul>
+
+                  <h3>متطلبات الكورس</h3>
+                  <ul class="requirements-list">
+                    <li>
+                      <i class="pi pi-angle-left"></i>
+                      <span>جهاز كمبيوتر أو هاتف ذكي</span>
+                    </li>
+                    <li>
+                      <i class="pi pi-angle-left"></i>
+                      <span>اتصال بالإنترنت</span>
+                    </li>
+                    <li>
+                      <i class="pi pi-angle-left"></i>
+                      <span>الرغبة في التعلم والتفوق</span>
+                    </li>
+                  </ul>
+                </div>
+              </p-tabPanel>
+
+              <!-- Curriculum Tab -->
+              <p-tabPanel>
+                <ng-template pTemplate="header">
+                  <i class="pi pi-list"></i>
+                  <span>محتوى الكورس</span>
+                </ng-template>
+
+                <div class="tab-content">
+                  <div class="curriculum-header">
+                    <span>{{ course()!.videosCount }} فيديو</span>
+                    <span>{{ course()!.durationHours }} ساعة إجمالي</span>
+                  </div>
+
+                  <p-accordion [multiple]="true" styleClass="curriculum-accordion">
+                    <p-accordionTab header="الوحدة الأولى: مقدمة">
+                      <div class="lesson-item">
+                        <div class="lesson-info">
+                          <i class="pi pi-play-circle"></i>
+                          <span>الدرس الأول: مقدمة في العلوم</span>
+                        </div>
+                        <span class="lesson-duration">15:00</span>
+                      </div>
+                      <div class="lesson-item">
+                        <div class="lesson-info">
+                          <i class="pi pi-play-circle"></i>
+                          <span>الدرس الثاني: المفاهيم الأساسية</span>
+                        </div>
+                        <span class="lesson-duration">20:00</span>
+                      </div>
+                    </p-accordionTab>
+                    <p-accordionTab header="الوحدة الثانية: الجزء التطبيقي">
+                      <div class="lesson-item">
+                        <div class="lesson-info">
+                          <i class="pi pi-play-circle"></i>
+                          <span>الدرس الثالث: تطبيقات عملية</span>
+                        </div>
+                        <span class="lesson-duration">25:00</span>
+                      </div>
+                    </p-accordionTab>
+                  </p-accordion>
+                </div>
+              </p-tabPanel>
+
+              <!-- Teacher Tab -->
+              <p-tabPanel>
+                <ng-template pTemplate="header">
+                  <i class="pi pi-user"></i>
+                  <span>المدرس</span>
+                </ng-template>
+
+                <div class="tab-content"  >
+                  <div class="teacher-card" [routerLink]="['/user/teacher-profile', course()!.teacher_id]">
+                    <p-avatar
+                      icon="pi pi-user"
+                      size="xlarge"
+                      shape="circle"
+                      styleClass="teacher-avatar-large">
+                    </p-avatar>
+                    <div class="teacher-info-card">
+                      <h3>{{ course()!.techerName }}</h3>
+                      <p class="teacher-subject">مدرس {{ course()!.subject }}</p>
+                      <div class="teacher-stats">
+                        <div class="t-stat">
+                          <i class="pi pi-book"></i>
+                          <span>5 كورسات</span>
+                        </div>
+                        <div class="t-stat">
+                          <i class="pi pi-users"></i>
+                          <span>500+ طالب</span>
+                        </div>
+                        <div class="t-stat">
+                          <i class="pi pi-star-fill"></i>
+                          <span>4.8 تقييم</span>
+                        </div>
+                      </div>
+                      <p class="teacher-bio">
+                        مدرس متخصص في مادة {{ course()!.subject }} مع خبرة واسعة في التدريس وتبسيط المعلومات للطلاب.
+                      </p>
+                      <p-button
+
+                        label="عرض الملف الشخصي"
+                        icon="pi pi-arrow-left"
+                        iconPos="left"
+                        styleClass="p-button-outlined">
+                      </p-button>
+                    </div>
+                  </div>
+                </div>
+              </p-tabPanel>
+
+            </p-tabView>
+
+          </div>
+
+          <!-- Right: Sticky Sidebar -->
+          <div class="course-sidebar">
+            <div class="sidebar-card">
+
+              <!-- Course Image -->
+              <div class="sidebar-image">
+                <img [src]="course()!.imageUrl" [alt]="course()!.title">
+                <div class="play-overlay">
+                  <button class="play-btn" pRipple>
+                    <i class="pi pi-play-circle"></i>
+                  </button>
+                  <span>معاينة الكورس</span>
+                </div>
+              </div>
+
+              <!-- Price -->
+              <div class="sidebar-price">
+                <div class="price-tag">
+                  <span class="price-amount">{{ course()!.price }}</span>
+                  <span class="price-currency">جنيه</span>
+                </div>
+                <!-- <span class="original-price">300 جنيه</span>
+                <p-tag value="خصم 50%" severity="danger"></p-tag> -->
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="sidebar-actions">
+                <p-button
+                  label="اشترك الآن"
+                  icon="pi pi-shopping-cart"
+                  styleClass="w-full enroll-btn"
+                  (onClick)="enrollCourse()">
+                </p-button>
+                <p-button
+                  label="أضف للمفضلة"
+                  icon="pi pi-heart"
+                  styleClass="w-full wishlist-btn"
+                  [outlined]="true"
+                  (onClick)="addToWishlist()">
+                </p-button>
+              </div>
+
+              <!-- Course Features -->
+              <div class="sidebar-features">
+                <h4>يتضمن هذا الكورس:</h4>
+                <ul>
+
+                  <li>
+                    <i class="pi pi-folder"></i>
+                    <span>{{ course()!.filesCount }} ملف للتحميل</span>
+                  </li>
+                  <li>
+                    <i class="pi pi-mobile"></i>
+                    <span>الوصول من أي جهاز</span>
+                  </li>
+
+                  <li>
+                    <i class="pi pi-verified"></i>
+                    <span>شهادة إتمام</span>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Share -->
+              <div class="sidebar-share">
+                <span>شارك الكورس:</span>
+                <div class="share-buttons">
+                  <button pRipple class="share-btn facebook">
+                    <i class="pi pi-facebook"></i>
+                  </button>
+                  <button pRipple class="share-btn twitter">
+                    <i class="pi pi-twitter"></i>
+                  </button>
+                  <button pRipple class="share-btn whatsapp">
+                    <i class="pi pi-whatsapp"></i>
+                  </button>
+                  <button pRipple class="share-btn copy" (click)="shareCourse()">
+                    <i class="pi pi-link"></i>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  }
+
+</div>

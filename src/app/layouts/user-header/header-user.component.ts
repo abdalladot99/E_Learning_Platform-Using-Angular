@@ -1,3 +1,4 @@
+import { AuthService } from './../../services/auth.service';
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
 import { BadgeModule } from 'primeng/badge';
@@ -8,7 +9,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterLink, RouterModule } from '@angular/router';
 import { AvatarModule } from 'primeng/avatar';
 import { ToolbarModule } from 'primeng/toolbar';
 
@@ -27,14 +28,18 @@ import { ToolbarModule } from 'primeng/toolbar';
     TooltipModule,
     SidebarModule,
     InputTextModule,
-    OverlayPanelModule],
+    OverlayPanelModule,
+    RouterLink
+  ],
   templateUrl: './header-user.component.html',
   styleUrl: './header-user.component.css'
 })
-export class HeaderUserComponent  {
+export class HeaderUserComponent{
+
+  constructor(private authService: AuthService) { }
 
   sidebarVisible = false;
-  isLoggedIn = true;
+  isLoggedIn = this.authService.isLoggedIn();
 
   user = {
     name: 'أحمد محمد',
@@ -58,6 +63,6 @@ export class HeaderUserComponent  {
   ];
 
   logout() {
-    this.isLoggedIn = false;
+      this.authService.logout();
   }
 }

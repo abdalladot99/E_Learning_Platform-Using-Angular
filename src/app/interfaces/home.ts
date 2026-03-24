@@ -15,6 +15,13 @@ export interface Enrollment {
   payment: any;
 }
 
+export interface SubjectData {
+  subject:   string;
+  teachers:  Teacher[];
+  courses:   Course[];
+}
+
+
 export interface Course {
   id: string;
   title: string;

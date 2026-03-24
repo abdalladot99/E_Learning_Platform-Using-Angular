@@ -1,0 +1,45 @@
+<div class="course-card" [class.featured]="i === 0" [routerLink]="['/user/details', course.id]" style="min-height: 532px; ;">
+              <div class="course-image">
+                <img [src]="course.imageUrl" [alt]="course.title">
+                @if (i === 0 && status==='newCourse') {
+                  <div class="new-badge">جديد</div>
+                }@if(i === 0 && status==='popularCourses')
+                {
+                  <div class="new-badge">مشهور</div>
+                }
+                <div class="course-badge">
+                  <span class="subject">{{ course.subject }}</span>
+                </div>
+                <div class="course-overlay">
+                  <button class="preview-btn">
+                    <i class="fas fa-play"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="course-content">
+                <div class="course-meta">
+                  <span class="level"><i class="fas fa-signal"></i> {{ course.level }}</span>
+                  <span class="academic-year">
+                    <i class="fas fa-graduation-cap"></i> {{ course.academicYearTarget }}
+                  </span>
+                </div>
+
+                <h3 class="course-title">{{ course.title }}</h3>
+
+                <p class="course-description">{{ course.description | slice:0:80 }}...</p>
+
+                <div class="course-teacher">
+                  <img src={{course.imageUrl}} alt="teacher">
+                  <span>{{ course.techerName }}</span>
+                </div>
+
+                <div class="course-footer">
+                  <div class="course-price">
+                    <span class="price">{{ course.price }}</span>
+                    <span class="currency">جنيه</span>
+                  </div>
+                  <button class="enroll-btn">اشترك الآن</button>
+                </div>
+              </div>
+            </div>
